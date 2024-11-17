@@ -17,6 +17,7 @@ public class Product {
     private String pStatus;
     @Column(name = "pPrice", nullable = false)
     private int pPrice;
+    @Column( nullable = false)
     private String p_category;
 
     public String getP_category() {

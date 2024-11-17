@@ -1,5 +1,6 @@
 package com.RBS.demo.controller;
 
+import com.RBS.demo.model.Product;
 import com.RBS.demo.model.Sales;
 import com.RBS.demo.service.SalesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,33 +23,19 @@ public class SalesController {
 
     // Get all sales
     @GetMapping("/list")
-    public List<Sales> getAllSales() {
-        return salesService.getAllSales();  // Returns the list of all sales
+    public List<Sales> findAll() {
+        return salesService.findAll();  // Returns the list of all sales
+    }
+    @GetMapping("/product")
+    public List<Sales>findAllByProductId(@RequestParam int productId) {
+        return salesService.findAllByProductId(productId);  // Returns the sale with the given ID
     }
 
-    // Get sale by ID
-    @GetMapping("/{saleId}")
-    public Sales getSaleById(@PathVariable int saleId) {
-        return salesService.getSaleById(saleId);  // Returns the sale with the given ID
-    }
 
-    // Get sales by product name
-    @GetMapping("/product/{pName}")
-    public List<Sales> getSalesByProductName(@PathVariable String pName) {
-        return salesService.getSalesByProductName(pName);  // Returns sales for the given product name
-    }
 
-    // Get sales by category
-    @GetMapping("/category/{category}")
-    public List<Sales> getSalesByCategory(@PathVariable String category) {
-        return salesService.getSalesByCategory(category);  // Returns sales for the given category
-    }
 
-    // Get count of sales for a specific product ID
-    @GetMapping("/count/{pId}")
-    public long countSalesByProductId(@PathVariable int pId) {
-        return salesService.countSalesByProductId(pId);  // Returns the count of sales for the given product ID
-    }
+
+
 
     // Delete sale by ID
     @DeleteMapping("/{saleId}")

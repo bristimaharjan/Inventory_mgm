@@ -1,5 +1,7 @@
 package com.RBS.demo.service.impl;
 
+
+
 import com.RBS.demo.model.Sales;
 import com.RBS.demo.repository.SalesRepository;
 import com.RBS.demo.service.SalesService;
@@ -7,33 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class SalesServiceImpl implements SalesService {
 
-    private final SalesRepository salesRepository;
 
-    @Autowired
-    public SalesServiceImpl(SalesRepository salesRepository) {
-        this.salesRepository = salesRepository;
-    }
-
+  @Autowired
+  private SalesRepository salesRepository;
     @Override
     public Sales addSale(Sales sales) {
         return salesRepository.save(sales);
     }
 
-    @Override
-    public List<Sales> getAllSales() {
-        return salesRepository.findAll();
-    }
-
-    @Override
-    public Sales getSaleById(int saleId) {
-        Optional<Sales> sale = salesRepository.findById(saleId);
-        return sale.orElse(null); // or throw an exception if needed
-    }
 
     @Override
     public void deleteSaleById(int saleId) {
@@ -50,18 +38,15 @@ public class SalesServiceImpl implements SalesService {
     }
 
     @Override
-    public List<Sales> getSalesByProductName(String pName) {
-        return salesRepository.findByPName(pName);
+    public List<Sales> findAll() {
+        return List.of();
     }
 
     @Override
-    public List<Sales> getSalesByCategory(String category) {
-        return salesRepository.findByCategory(category);
+    public List<Sales> findAllByProductId(int productId) {
+        return List.of();
     }
 
-    @Override
-    public long countSalesByProductId(int pId) {
-        return salesRepository.countByPId(pId);
-    }
+
 }
 
