@@ -1,6 +1,7 @@
 package com.RBS.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @Entity
@@ -9,16 +10,29 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String orderdate;
+
+    @Column(name = "order_date", nullable = false) // Maps the field to "order_date" column
+    private LocalDateTime orderDate;
+
+    @Column(nullable = false)
     private String status;
-    private double totalamount;
+
+    @Column(name = "total_amount", nullable = false)
+    private double totalAmount;
+
+    @Column(nullable = false)
     private int quantity;
-    private String ordernumber; // Change to String for flexibility
+
+    @Column(name = "order_number", unique = true, nullable = false)
+    private String orderNumber; // Changed to String for flexibility
+
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false) // Maps the relationship to a "user_id" column
     private User user;
 
     public Order() {
-        this.ordernumber = generateUniqueOrderNumber();
+        this.orderNumber = generateUniqueOrderNumber();
+        this.orderDate = LocalDateTime.now(); // Automatically set the order date to the current date and time
     }
 
     public User getUser() {
@@ -45,12 +59,12 @@ public class Order {
         this.status = status;
     }
 
-    public void setTotalamount(double totalamount) {
-        this.totalamount = totalamount;
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public double getTotalAmount() {
-        return totalamount;
+        return totalAmount;
     }
 
     public int getQuantity() {
@@ -61,20 +75,20 @@ public class Order {
         this.quantity = quantity;
     }
 
-    public String getOrdernumber() {
-        return ordernumber;
+    public String getOrderNumber() {
+        return orderNumber;
     }
 
-    public void setOrdernumber(String ordernumber) {
-        this.ordernumber = ordernumber;
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
-    public String getOrderdate() {
-        return orderdate;
+    public LocalDateTime getOrderDate() {
+        return orderDate;
     }
 
-    public void setOrderdate(String orderdate) {
-        this.orderdate = orderdate;
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
     }
 
     // Method to generate a random and unique order number
