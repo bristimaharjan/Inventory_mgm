@@ -43,13 +43,18 @@ export async function deleteUser(id) {
     
 }
 export async function deleteMenuItem(itemId) {
+    console.log("Deleting menu items");
     return await makeApiCall(`/menu_items/${itemId}`,"DELETE");
     
 }
-export async function updateMenuItem(itemId) {
-    return await makeApiCall(`/menu_items/${itemId}`,"PUT");
-    
-}
+export async function updateMenuItem(MenuItem, itemId) {
+    console.log("Updating menu items");
+    return await makeApiCall(`/menu_items/${itemId}`, "PUT", MenuItem);
+  }
+  export async function findByItemId  (itemId) {
+    return await makeApiCall(`/menu_items/${itemId}`, "GET");
+  }
+  
 
 
 
