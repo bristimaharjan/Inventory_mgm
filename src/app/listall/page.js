@@ -7,34 +7,31 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEffect, useState } from 'react';
-import { getUsers } from '../util/api';
-
-function createData(Id, Name, Price, Category) {
-  return { Id, Name, Price, Category };
-}
-
-const rows = [
-  createData('1', 'Momo', 120, 'MEAL'),
-  createData('2', 'Coke', 60, 'BEVERAGE'),
-  createData('3', 'Chocolate_Icecream', 90, 'DESSERT'),
-  createData('4', 'Chips', 50, 'SNACK'),
-];
-
-
+import { deleteUser, getUsers } from '../util/api';
+import { IconButton } from '@mui/material';
+import { Delete, Edit, RemoveRedEye } from '@mui/icons-material';
 export default function BasicTable() {
   const [users, setUsers] = useState([]);
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await getUsers(); // Fetch data
-        setUsers(response); // Update state
-        console.log(response); // Log the fetched response directly
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
       fetchUsers();
   }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers(); // Fetch data
+      setUsers(response); // Update state
+      console.log(response); // Log the fetched response directly
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  }
+
+  const handledelete = async (id) => {
+    const response = await deleteUser(id);
+    if(response){
+      fetchUsers();
+    }
+  }
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -58,9 +55,7 @@ export default function BasicTable() {
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {row.id}
-              </TableCell>
+              
               <TableCell align="right">{row.id}</TableCell>
               <TableCell align="right">{row.email}</TableCell>
               <TableCell align="right">{row.firstname}</TableCell>
@@ -68,6 +63,20 @@ export default function BasicTable() {
               <TableCell align="right">{row.password}</TableCell>
               <TableCell align="right">{row.role}</TableCell>
               <TableCell align="right">{row.username}</TableCell>
+              <TableCell align="right">
+                <IconButton>
+                  <Edit></Edit>
+                </IconButton>
+                <IconButton onClick={()=> handledelete(row.id)}>
+                  <Delete></Delete>
+                </IconButton>
+                <IconButton>
+                  <RemoveRedEye></RemoveRedEye>
+                </IconButton>
+                <IconButton>
+                
+                </IconButton>
+              </TableCell>
 
             </TableRow>
           ))}

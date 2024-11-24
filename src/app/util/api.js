@@ -33,5 +33,25 @@ export async function fetchMenuItems() {
     console.log("Fetching menu items");
     return await makeApiCall("/menu_items/list", "GET");
 }
+export async function addMenuItems(MenuItem){
+    console.log("Adding menu items");
+    return await makeApiCall("/menu_items/add","POST",MenuItem);
+}
+
+export async function deleteUser(id) {
+    return await makeApiCall(`/users/${id}`,"DELETE");
+    
+}
+export async function deleteMenuItem(itemId) {
+    return await makeApiCall(`/menu_items/${itemId}`,"DELETE");
+    
+}
+export async function updateMenuItem(itemId) {
+    return await makeApiCall(`/menu_items/${itemId}`,"PUT");
+    
+}
+
+
+
 
   
