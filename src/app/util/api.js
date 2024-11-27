@@ -1,62 +1,81 @@
-const API_BASE_URL="http://localhost:8080";
-export async function makeApiCall (endpoint,method ="GET",body =null){
-    try{
-        const headers ={
-            "Content-Type":"application/json",
-        };
-        const options ={
-            method,
-            headers,
-        };
-        if(body){
-            options.body =JSON.stringify(body);
-        }
-        const response = await fetch (`${API_BASE_URL}${endpoint}`,options);
-        if(!response.ok){
-            const errorData = await response.json();
-            throw new Error(errorData.message ||"API error")
-        }
-        return await response.json();
-    }catch(error){
-        console.error(`error in API call to ${endpoint}:`,error);
-        throw error;
+import axios from "axios";
+import { getToken, saveToken } from "./authUtil";
+
+const API_BASE_URL = "http://localhost:8080";
+
+export async function makeApiCall(endpoint, method = "GET", body = null) {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    const token = getToken();
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
+
+    const config = {
+      method,
+      url: `${API_BASE_URL}${endpoint}`,
+      headers,
+    };
+
+    if (body) {
+      config.data = body;
+    }
+
+    const response = await axios(config);
+    return response.data;
+  } catch (error) {
+    console.error(`Error in API call to ${endpoint}:`, error);
+
+    // Check if the error is a response error
+    if (error.response) {
+      throw new Error(error.response.data.message || "API error");
+    } else {
+      throw new Error(error.message);
+    }
+  }
 }
+
 export function getUsers(){
-    return makeApiCall("/users/list","GET");
+    return makeApiCall("/users/list", "GET");
 }
-export async function login (data){
+
+export async function login(data) {
     console.log("Making api call");
-    return await makeApiCall("/auth/login","POST",data);
-} 
-export async function fetchMenuItems() {
-    console.log("Fetching menu items");
-    return await makeApiCall("/menu_items/list", "GET");
-}
-export async function addMenuItems(MenuItem){
-    console.log("Adding menu items");
-    return await makeApiCall("/menu_items/add","POST",MenuItem);
+    const response = await makeApiCall("/auth/login", "POST", data);
+    saveToken(response.Token);
+    return response;
+    
 }
 
 export async function deleteUser(id) {
     return await makeApiCall(`/users/${id}`,"DELETE");
     
 }
+
+export async function fetchMenuItems() {
+    console.log("Fetching menu items");
+    return await makeApiCall("/menu_items/list", "GET");
+}
+
+export async function addMenuItems(MenuItem){
+    console.log("Adding menu items");
+    return await makeApiCall("/menu_items/add","POST",MenuItem);
+}
+
 export async function deleteMenuItem(itemId) {
     console.log("Deleting menu items");
     return await makeApiCall(`/menu_items/${itemId}`,"DELETE");
     
 }
+
 export async function updateMenuItem(MenuItem, itemId) {
     console.log("Updating menu items");
     return await makeApiCall(`/menu_items/${itemId}`, "PUT", MenuItem);
-  }
-  export async function findByItemId  (itemId) {
+}
+
+export async function findByItemId  (itemId) {
     return await makeApiCall(`/menu_items/${itemId}`, "GET");
-  }
-  
-
-
-
-
-  
+}
