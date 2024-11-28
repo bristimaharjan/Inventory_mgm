@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { isTokenValid } from "./util/authUtil";
+import { isTokenValid, removeToken } from "./util/authUtil";
 
 export default function Layout({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -21,6 +21,7 @@ export default function Layout({ children }) {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
+      removeToken();
       router.push("/login");
     }
   };

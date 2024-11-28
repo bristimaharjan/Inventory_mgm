@@ -32,7 +32,7 @@ export default function Login() {
         const normalizedRole = loginData.role.toLowerCase(); // Normalize role to lowercase
 
         if (normalizedRole === "admin") {
-          router.push("/AdminHome");
+          router.push("/list");
         } else if (normalizedRole === "student") {
           router.push("/StudentHome");
         } else {
