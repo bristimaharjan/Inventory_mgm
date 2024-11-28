@@ -8,6 +8,7 @@ export default function Login() {
   const [loginData, setLoginData] = useState({
     username: "",
     password: "",
+    role: "",
   });
   const router = useRouter();
 
@@ -21,12 +22,43 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("My data : ", loginData);
-    const response = await login(loginData);
-    console.log(response);
+    console.log("Submitted Data: ", loginData);
 
-    if (response.Token) {
-      router.push("/");
+    try {
+      const response = await login(loginData);
+      console.log("API Response: ", response);
+
+      if (response?.Token) {
+        const normalizedRole = loginData.role.toLowerCase(); // Normalize role to lowercase
+
+        if (normalizedRole === "admin") {
+          router.push("/AdminHome");
+        } else if (normalizedRole === "student") {
+          router.push("/StudentHome");
+        } else {
+          alert("Invalid role! Please enter 'Admin' or 'Student'.");
+        }
+      } else {
+        alert("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Login Error: ", error);
+
+      if (error.response) {
+        console.error("API Response Error: ", error.response);
+        alert(
+          error.response.data?.message ||
+            `Error: ${error.response.status} - ${error.response.statusText}`
+        );
+      } else if (error.request) {
+        console.error("API Request Error: ", error.request);
+        alert(
+          "Network error. Please check your internet connection and try again."
+        );
+      } else {
+        console.error("Unexpected Error: ", error.message);
+        alert("An unexpected error occurred. Please try again later.");
+      }
     }
   };
 
@@ -62,6 +94,40 @@ export default function Login() {
           Login to continue to your dashboard.
         </Typography>
         <Grid container direction="column" spacing={3}>
+          <Grid item>
+            <TextField
+              label="Role (Admin/Student)"
+              variant="outlined"
+              name="role"
+              fullWidth
+              value={loginData.role}
+              onChange={handleChange}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  backgroundColor: "#f7f9fc",
+                  border: "2px solid #74b9ff",
+                  transition: "border-color 0.3s ease-in-out",
+                  "&:hover": {
+                    backgroundColor: "#eef2f6",
+                    borderColor: "#00cec9",
+                  },
+                  "&.Mui-focused": {
+                    backgroundColor: "#ffffff",
+                    borderColor: "#6c5ce7",
+                    boxShadow: "0 0 5px 2px rgba(108, 92, 231, 0.3)",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#636e72",
+                  fontWeight: 500,
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#6c5ce7",
+                },
+              }}
+            />
+          </Grid>
           <Grid item>
             <TextField
               label="Username"
