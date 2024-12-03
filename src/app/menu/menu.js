@@ -41,7 +41,7 @@ export default function Sidebar({ drawerOpen, toggleDrawer }) {
 
   const handleLogout = () => {
     removeToken();
-    router.push("/login");
+    //router.push("/login");
   };
   return (
     <Drawer

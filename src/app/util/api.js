@@ -54,6 +54,10 @@ export async function deleteUser(id) {
     return await makeApiCall(`/users/${id}`,"DELETE");
     
 }
+export async function addUser(User){
+  console.log("Adding user to database");
+  return await makeApiCall("/users/add","POST",User);
+}
 
 export async function fetchMenuItems() {
     console.log("Fetching menu items");
@@ -78,4 +82,16 @@ export async function updateMenuItem(MenuItem, itemId) {
 
 export async function findByItemId  (itemId) {
     return await makeApiCall(`/menu_items/${itemId}`, "GET");
+}
+export async function fetchOrders() {
+  return await makeApiCall("/orders/list", "GET");
+}
+export async function fetchOrdersByStatus(status) {
+  return await makeApiCall(`/orders/status/${status}`, "GET");
+}
+export async function fetchOrdersByUserId(userId) {
+  return await makeApiCall(`/orders/user/${userId}`, "GET");
+}
+export async function fetchOrderById(orderId) {
+  return await makeApiCall(`/orders/${orderId}`, "GET");
 }
