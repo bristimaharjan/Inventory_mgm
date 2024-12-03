@@ -2,11 +2,13 @@ package com.RBS.demo.service.impl;
 
 
 import com.RBS.demo.model.MenuItem;
+import com.RBS.demo.model.User;
 import com.RBS.demo.repository.MenuItemRepository;
 import com.RBS.demo.service.MenuItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,13 +37,39 @@ public class MenuItemServiceImpl implements MenuItemService {
     @Override
     public void deleteMenuItemById(int itemId) {
         getMenuItemById(itemId);
-        menuItemRepository.deleteById(itemId);
+        if (menuItemRepository.existsById(itemId)) {
+            menuItemRepository.deleteById(itemId);
+        } else {
+            throw new RuntimeException("MenuItem with ID " + itemId + " not found.");
+        }
+    }
+
+
+    @Override
+    public MenuItem updateMenuItem(MenuItem newMenuItem, int itemId) {
+        // Fetch existing menu item
+        MenuItem existingMenuItem = menuItemRepository.findById(itemId)
+                .orElseThrow(() -> new RuntimeException("Menu item not found with ID: " + itemId));
+
+        // Update fields selectively
+        if (newMenuItem.getItemName() != null) {
+            existingMenuItem.setItemName(newMenuItem.getItemName());
+        }
+        if (newMenuItem.getItemPrice() != null) {
+            existingMenuItem.setItemPrice(newMenuItem.getItemPrice());
+        }
+        if (newMenuItem.getItemCategory() != null) {
+            existingMenuItem.setItemCategory(newMenuItem.getItemCategory());
+        }
+
+        // Save updated menu item
+        return menuItemRepository.save(existingMenuItem);
     }
 
     @Override
-    public MenuItem updateMenuItem(MenuItem menuItem, int itemId) {
-        getMenuItemById(itemId);
-        menuItem.setItemId(itemId);
-        return menuItemRepository.save(menuItem);
+    public MenuItem findByItemId(int itemId) {
+        Optional<MenuItem> optionalUser = menuItemRepository.findById(itemId);
+        MenuItem menuItem= optionalUser.orElseThrow((()->new RuntimeException("Menu not found")));
+        return menuItem;
     }
 }

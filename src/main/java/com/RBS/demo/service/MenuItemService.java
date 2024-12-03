@@ -1,6 +1,7 @@
 package com.RBS.demo.service;
 
 import com.RBS.demo.model.MenuItem;
+import com.RBS.demo.model.User;
 
 import java.util.List;
 
@@ -10,4 +11,5 @@ public interface MenuItemService {
     MenuItem getMenuItemById(int itemId);
     void deleteMenuItemById(int itemId);
     MenuItem updateMenuItem(MenuItem menuItem, int itemId);
+     MenuItem findByItemId( int itemId);
 }

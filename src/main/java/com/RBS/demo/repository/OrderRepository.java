@@ -9,9 +9,10 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order,Integer> {
     // Find all orders by a specific user ID
-    List<Order> findByUser_id(int userid);
+    List<Order> findByUser_Id(int userid);
 
     // Find all orders with a specific status
     List<Order> findByStatus(String status);
+    void deleteByUser_Id(int userId);
 
 }

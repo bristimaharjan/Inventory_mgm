@@ -3,9 +3,12 @@ package com.RBS.demo.controller;
 import com.RBS.demo.model.MenuItem;
 import com.RBS.demo.service.MenuItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/menu_items")
@@ -16,6 +19,7 @@ public class MenuItemController {
 
     @PostMapping("/add")
     public MenuItem addMenuItem(@RequestBody MenuItem menuItem){
+        System.out.println("Received menu item: " + menuItem);
         return menuItemService.addMenuItem(menuItem);
     }
 
@@ -25,17 +29,23 @@ public class MenuItemController {
     }
 
     @GetMapping("/{itemId}")
-    public MenuItem getMenuItemById(@PathVariable int itemId){
+    public MenuItem findByItemId(@PathVariable int itemId){
         return menuItemService.getMenuItemById(itemId);
     }
 
     @DeleteMapping("/{itemId}")
-    public void deleteMenuItemById(@PathVariable int itemId){
-        menuItemService.deleteMenuItemById(itemId);
+    public Map<String, Boolean> deleteMenuItemById(@PathVariable int itemId) {
+        menuItemService.deleteMenuItemById(itemId); // Calls service to handle deletion
+        return Map.of("Success", true); // Returns success status as a JSON response
     }
 
-    @PutMapping("/update/{itemId}")
-    public MenuItem updateMenuItem(@RequestBody MenuItem menuItem, @PathVariable int itemId){
-        return menuItemService.updateMenuItem(menuItem,itemId);
+    @PutMapping("{itemId}")
+    public ResponseEntity<MenuItem> updateMenuItem(@RequestBody MenuItem menuItem, @PathVariable int itemId) {
+        try {
+            MenuItem updatedItem = menuItemService.updateMenuItem(menuItem, itemId);
+            return ResponseEntity.ok(updatedItem);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Handle not found case
+        }
     }
 }

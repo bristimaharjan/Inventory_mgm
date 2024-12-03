@@ -17,9 +17,9 @@ public class AuthController {
     @Autowired
     private Authservice authService;
     @PostMapping("/login")
-    public Map<String,Boolean> login (@RequestBody LoginDto loginDto){
-        boolean isSuccess = authService.login(loginDto.username(),loginDto.password());
-        return Map.of("success",isSuccess);
+    public Map<String,String> login (@RequestBody LoginDto loginDto){
+        String token  = authService.login(loginDto.username(),loginDto.password());
+        return Map.of("Token",token);
     }
 
 }

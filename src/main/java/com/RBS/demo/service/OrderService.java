@@ -15,10 +15,11 @@ public interface OrderService {
     Order getById(int id);
 
     // Find all orders placed by a specific user (e.g., by username or userId)
-    List<Order> findByUserid(int userid);
+    List<Order> findByUserId(int userId);
 
     // Update the details of an existing order
     Order updateOrder(Order order, int id);
+    void deleteByUserId(int userId);
 
     // Cancel or delete an order by its ID
     void deleteById(int id);

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -31,8 +32,9 @@ public class UserController {
         return userService.getById(id);
     }
     @DeleteMapping("{id}")
-    public void deleteById(@PathVariable int id) {
+    public Map<String,Boolean> deleteById(@PathVariable int id) {
         userService.deleteById(id);
+        return Map.of("Success",true);
 
     }
 

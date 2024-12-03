@@ -29,6 +29,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false) // Maps the relationship to a "user_id" column
     private User user;
+    @ManyToOne
+    private MenuItem menuItem;
 
     public Order() {
         this.orderNumber = generateUniqueOrderNumber();

@@ -37,10 +37,9 @@ public class OrderController {
         return orderService.getById(id);
     }
 
-    // Delete an order by ID
     @DeleteMapping("/{id}")
-    public void deleteOrderById(@PathVariable int id) {
-        orderService.deleteById(id);
+    public void deleteOrderByUserId(@PathVariable int userId ) {
+        orderService.deleteByUserId(userId);
     }
 
     // Get all orders by status
@@ -51,8 +50,8 @@ public class OrderController {
 
     // Get all orders placed by a specific user
     @GetMapping("/user/{userid}")
-    public List<Order> getOrdersByUserId(@PathVariable int userid) {
-        return orderService.findByUserid(userid);
+    public List<Order> getOrdersByUserId(@PathVariable int userId) {
+        return orderService.findByUserId(userId);
     }
 
     // Calculate the total amount for a specific order
@@ -60,5 +59,6 @@ public class OrderController {
     public double calculateTotalAmount(@PathVariable int orderid) {
         return orderService.calculateTotalAmount(orderid);
     }
+
 }
 

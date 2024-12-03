@@ -4,6 +4,7 @@ import com.RBS.demo.model.Order;
 import com.RBS.demo.model.User;
 import com.RBS.demo.repository.OrderRepository;
 import com.RBS.demo.service.OrderService;
+import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,9 +34,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findByUserid(int userid) {
+    public List<Order> findByUserId(int userId) {
         return List.of();
     }
+
+
 
     @Override
     public Order updateOrder(Order order, int id) {
@@ -45,10 +48,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void deleteByUserId(int userId) {
+
+        getById(userId);
+        orderRepository.deleteById(userId);
+    }
+
+    @Override
     public void deleteById(int id) {
         getById(id);
         orderRepository.deleteById(id);
     }
+
 
     @Override
     public List<Order> findByStatus(String status) {

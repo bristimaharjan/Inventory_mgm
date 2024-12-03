@@ -21,6 +21,15 @@ public class MenuItem {
     @Enumerated(EnumType.STRING) //Maps the enum as a string in the database
     @Column(nullable = false)
     private ItemCategory itemCategory;
+    private String itemImage;
+
+    public String getItemImage() {
+        return itemImage;
+    }
+
+    public void setItemImage(String itemImage) {
+        this.itemImage = itemImage;
+    }
 
     public int getItemId() {
         return itemId;

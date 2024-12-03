@@ -1,8 +1,10 @@
 package com.RBS.demo.service.impl;
 
 import com.RBS.demo.model.User;
+import com.RBS.demo.repository.OrderRepository;
 import com.RBS.demo.repository.UserRepository;
 import com.RBS.demo.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private OrderRepository orderRepository;
     @Override
     public User add(User user) {
         return userRepository.save(user);
@@ -30,8 +34,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteById(int id) {
         getById(id);
+        orderRepository.deleteByUser_Id(id);
         userRepository.deleteById(id);
     }
 
